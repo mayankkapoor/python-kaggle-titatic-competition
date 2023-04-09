@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
+from xgboost import XGBClassifier
 from sklearn.metrics import (accuracy_score, confusion_matrix, ConfusionMatrixDisplay, classification_report)
 import matplotlib.pyplot as plt
 
@@ -57,7 +57,7 @@ def main():
     y = train_data['Survived']
     X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    model = RandomForestClassifier(random_state=42)
+    model = XGBClassifier(use_label_encoder=False, random_state=42, eval_metric='logloss')
     model.fit(X_train, y_train)
 
     # Visualize the fit using a confusion matrix
