@@ -1,9 +1,10 @@
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
-from sklearn.svm import SVC
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (accuracy_score, confusion_matrix, ConfusionMatrixDisplay, classification_report)
 import matplotlib.pyplot as plt
+import pickle
 
 def preprocess_data(data):
     data = data.drop(['Ticket'], axis=1)
@@ -57,8 +58,12 @@ def main():
     y = train_data['Survived']
     X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    model = SVC(random_state=42)
+    model = LogisticRegression(random_state=42, max_iter=1000)
     model.fit(X_train, y_train)
+
+    # Save the model as a pickle file
+    with open("logistic_regression_model.pkl", "wb") as f:
+        pickle.dump(model, f)
 
     # Visualize the fit using a confusion matrix
     plot_cm(model, X_val, y_val)
